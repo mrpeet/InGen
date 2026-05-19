@@ -20,6 +20,9 @@ __pycache__/
 .pytest_cache/
 .ipynb_checkpoints/
 
+# Sony Woosh (cloned + downloaded separately; see server/models/download_woosh.py)
+server/models/woosh/
+
 # Server cache & generated media
 server/cache/
 *.wav

@@ -303,7 +303,10 @@ class AudioCraftGenerator:
                 print("[InGen Generator] Loading 'Sony Woosh DFlow' model...")
                 checkpoint_path = os.path.join(woosh_dir, "checkpoints", "Woosh-DFlow")
                 if not os.path.exists(os.path.join(checkpoint_path, "weights.safetensors")) and not os.path.exists(os.path.join(checkpoint_path, "weights.pt")):
-                    raise FileNotFoundError(f"Checkpoint weights not found at {checkpoint_path}. Please run python download_woosh.py in the models directory.")
+                    raise FileNotFoundError(
+                        f"Checkpoint weights not found at {checkpoint_path}. "
+                        "From server/: run `python models/download_woosh.py`."
+                    )
                     
                 self._woosh_model = FlowMapFromPretrained(LoadConfig(path=checkpoint_path))
                 self._woosh_model = self._woosh_model.eval().to(self.device)

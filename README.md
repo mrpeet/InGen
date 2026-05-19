@@ -56,20 +56,29 @@ The Python server hosts the `facebook/audiogen-medium` model (1.5B parameters) a
     pip install -r requirements.txt
     ```
 
-6.  **Install Meta AudioCraft (from Source)**:
+6.  **(Optional) Set up Sony Woosh DFlow** — only needed if you use the `woosh-dflow` model in the plugin:
+    From the `server` directory (venv active):
+    ```powershell
+    cd models
+    python download_woosh.py
+    cd ..
+    ```
+    This clones [Sony Woosh](https://github.com/SonyResearch/Woosh) into `server/models/woosh/` (gitignored) and downloads checkpoint weights from the [woosh-sfx releases](https://github.com/SonyResearch/woosh-sfx/releases). Re-run the script anytime to fetch missing checkpoints only.
+
+7.  **Install Meta AudioCraft (from Source)**:
     AudioCraft needs to be installed directly from the GitHub repository:
     ```powershell
     pip install git+https://github.com/facebookresearch/audiocraft.git
     ```
 
-7.  **Run the Server**:
+8.  **Run the Server**:
     Start the FastAPI server on `http://127.0.0.1:8000`:
     ```powershell
     python app/main.py
     ```
     *On the first run, the server will automatically download the `facebook/audiogen-medium` weights (~3 GB) from HuggingFace.*
 
-8.  **Verify Health:**
+9.  **Verify Health:**
     Open your browser and go to `http://127.0.0.1:8000/health`. You should see:
     ```json
     {"status": "healthy", "server": "InGen Server 1.0.0"}
@@ -118,3 +127,4 @@ The client frontend is built in C++ using the **JUCE Framework**.
 
 *   **CUDA Out of Memory (OOM):** We optimized the generation server to only use **AudioGen** for both layers. This saves massive amounts of GPU memory. Ensure you do not have other heavy GPU tasks (games, video rendering) running on your GTX 1070 while generating.
 *   **Port 8000 Conflict:** If another app is using Port 8000, you can change the host port in `server/app/main.py` (line 130) and update the URL in `client/Source/Network/LocalPythonServerClient.h` (line 36 & 95) accordingly, then rebuild the plugin.
+*   **Woosh / `server/models/woosh` dirty or submodule warnings:** Woosh is not tracked in this repo. Run `python models/download_woosh.py` from `server/` and ignore local changes inside `woosh/` — the folder is listed in `.gitignore`.
