@@ -10,7 +10,8 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 WOOSH_DIR = os.path.join(SCRIPT_DIR, "woosh")
 WOOSH_REPO = "https://github.com/SonyResearch/Woosh.git"
 
-MODELS = ["Woosh-DFlow.zip", "Woosh-AE.zip", "Woosh-CLAP.zip"]
+# DFlow depends on Woosh-AE and the CLAP text conditioner at runtime.
+MODELS = ["Woosh-DFlow.zip", "Woosh-AE.zip", "TextConditionerA.zip", "Woosh-CLAP.zip"]
 BASE_URL = "https://github.com/SonyResearch/woosh-sfx/releases/download/v1.0.0/"
 
 

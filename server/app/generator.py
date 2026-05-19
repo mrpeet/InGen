@@ -1,3 +1,4 @@
+import contextlib
 import os
 import sys
 import importlib.machinery
@@ -283,6 +284,16 @@ class AudioCraftGenerator:
             print("[InGen Generator] 'stabilityai/stable-audio-open-1.0' loaded successfully.")
         return self._stable_audio_model
 
+    @contextlib.contextmanager
+    def _woosh_workdir(self, woosh_dir: str):
+        """Woosh configs reference checkpoints/... relative to the repo root."""
+        prev = os.getcwd()
+        try:
+            os.chdir(woosh_dir)
+            yield
+        finally:
+            os.chdir(prev)
+
     def get_woosh_model(self):
         """Lazy load the Sony Woosh DFlow model."""
         self._unload_dormant_models("woosh")
@@ -307,8 +318,10 @@ class AudioCraftGenerator:
                         f"Checkpoint weights not found at {checkpoint_path}. "
                         "From server/: run `python models/download_woosh.py`."
                     )
-                    
-                self._woosh_model = FlowMapFromPretrained(LoadConfig(path=checkpoint_path))
+
+                # Nested paths in config.yaml (e.g. checkpoints/Woosh-AE) are relative to woosh_dir.
+                with self._woosh_workdir(woosh_dir):
+                    self._woosh_model = FlowMapFromPretrained(LoadConfig(path=checkpoint_path))
                 self._woosh_model = self._woosh_model.eval().to(self.device)
                 print("[InGen Generator] 'Sony Woosh DFlow' loaded successfully.")
             except Exception as e:
