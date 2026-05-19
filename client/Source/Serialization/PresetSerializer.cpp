@@ -54,7 +54,7 @@ bool PresetSerializer::deserializeFromJson (const juce::String& jsonString, Pres
         return false;
 
     // 1. Deserialize global properties
-    outData.isLinked = rootObj->getProperty ("isLinked").getValue();
+    outData.isLinked = static_cast<bool> (rootObj->getProperty ("isLinked"));
 
     // 2. Deserialize Layer A
     if (rootObj->hasProperty ("layerA"))

@@ -1,0 +1,10 @@
+^C:\USERS\PEETB\DESKTOP\INGEN\CLIENT\BUILD\_DEPS\SIGNALSMITH-LINEAR-SUBBUILD\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-linear-subbuild -BC:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-linear-subbuild --check-stamp-file C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-linear-subbuild/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

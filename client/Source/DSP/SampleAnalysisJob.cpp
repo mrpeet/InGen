@@ -1,6 +1,7 @@
 #include "SampleAnalysisJob.h"
 #include "PitchDetector.h"
 #include "TransientDetector.h"
+#include <juce_events/juce_events.h>
 
 namespace ingen {
 

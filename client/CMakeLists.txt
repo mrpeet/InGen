@@ -30,6 +30,8 @@ FetchContent_MakeAvailable(juce signalsmith-stretch)
 # -------------------------------------------------------------
 # Add InGen Plugin Target
 # -------------------------------------------------------------
+set(JUCE_VST3_CAN_REPLACE_VST2 0)
+
 juce_add_plugin(InGenSampler
     VERSION "1.0.0"
     COMPANY_NAME "InGen"
@@ -67,6 +69,10 @@ target_sources(InGenSampler PRIVATE
     Source/Serialization/PresetSerializer.cpp
     Source/Serialization/PresetArchiver.h
     Source/Serialization/PresetArchiver.cpp
+    Source/UI/GlassmorphicLookAndFeel.h
+    Source/UI/GlassmorphicLookAndFeel.cpp
+    Source/UI/WaveformVisualizer.h
+    Source/UI/WaveformVisualizer.cpp
 )
 
 target_link_libraries(InGenSampler PRIVATE
@@ -79,6 +85,10 @@ target_link_libraries(InGenSampler PRIVATE
     juce::juce_graphics
     juce::juce_events
     juce::juce_core
+)
+
+target_compile_definitions(InGenSampler PUBLIC
+    JUCE_VST3_CAN_REPLACE_VST2=0
 )
 
 target_include_directories(InGenSampler PRIVATE

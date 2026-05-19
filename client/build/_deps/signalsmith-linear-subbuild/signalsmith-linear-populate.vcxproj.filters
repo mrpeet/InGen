@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-linear-subbuild\CMakeFiles\57bb5a472890412cd45fb4621f144446\signalsmith-linear-populate-mkdir.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-linear-subbuild\CMakeFiles\57bb5a472890412cd45fb4621f144446\signalsmith-linear-populate-download.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-linear-subbuild\CMakeFiles\57bb5a472890412cd45fb4621f144446\signalsmith-linear-populate-update.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-linear-subbuild\CMakeFiles\57bb5a472890412cd45fb4621f144446\signalsmith-linear-populate-patch.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-linear-subbuild\CMakeFiles\57bb5a472890412cd45fb4621f144446\signalsmith-linear-populate-configure.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-linear-subbuild\CMakeFiles\57bb5a472890412cd45fb4621f144446\signalsmith-linear-populate-build.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-linear-subbuild\CMakeFiles\57bb5a472890412cd45fb4621f144446\signalsmith-linear-populate-install.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-linear-subbuild\CMakeFiles\57bb5a472890412cd45fb4621f144446\signalsmith-linear-populate-test.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-linear-subbuild\CMakeFiles\e9a8c56b618bd46c29d90d53c2b9cbb3\signalsmith-linear-populate-complete.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-linear-subbuild\CMakeFiles\8db05da6b7de9347ab7c3ea534764463\signalsmith-linear-populate.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-linear-subbuild\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-linear-subbuild\CMakeFiles\signalsmith-linear-populate" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{94678A8F-477A-349C-93C8-012E34693CB1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

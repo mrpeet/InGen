@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\CMakeFiles\2ab58c29f51324f2d2ee87e732937cd4\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{16C4B96E-93EC-371E-BAE8-2C78A42911B9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

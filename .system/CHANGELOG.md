@@ -50,6 +50,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Created **client/Source/Serialization/PresetArchiver.h/cpp** implementing export and import wrappers for self-contained `.ingsam` ZIP packages, including recursive temporary workspace setup and cleanup.
 - Updated **client/CMakeLists.txt** to compile the four new serialization files.
 
+## [0.7.0] - 2026-05-19
+
+### Added
+- Created **client/Source/UI/GlassmorphicLookAndFeel.h/cpp** implementing premium vector design schemes, translucent gradient panels (frosted glass), glowing neon-cyan attack dials, and dynamic hover outlines.
+- Created **client/Source/UI/WaveformVisualizer.h/cpp** implementing a 60fps peak-scanning waveform graph, interactive boundary markers for crop boundaries, and sign-change zero-crossing lock search algorithms.
+- Re-architected **client/Source/PluginEditor.h/cpp** to arrange widgets responsively, link ADSR sliders to SamplerVoice DSP models, and bind preset linkage toggles.
+- Updated **client/CMakeLists.txt** to compile the four new UI components.
+
+## [1.0.0] - 2026-05-19
+
+### Added
+- Integrated C++ preprocessor definitions to decouple VST2 legacy dependency, ensuring standalone compilation using standard Windows VST3 SDK boundaries.
+- Verified MSVC 19 thread configurations to guarantee zero memory allocations in real-time `processBlock` and `renderNextBlock` paths.
+- Deployed full Release VST3 and Standalone executable build pipelines.
+
+
 
 
 

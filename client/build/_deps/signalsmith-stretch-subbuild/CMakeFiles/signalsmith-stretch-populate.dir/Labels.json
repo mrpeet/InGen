@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-stretch-subbuild/CMakeFiles/signalsmith-stretch-populate"
+		},
+		{
+			"file" : "C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-stretch-subbuild/CMakeFiles/46c2b70bae99abf0b5ba15b407a3991d/signalsmith-stretch-populate.rule"
+		},
+		{
+			"file" : "C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-stretch-subbuild/CMakeFiles/f1ceb4cec0df86c03a2b48329de919ce/signalsmith-stretch-populate-complete.rule"
+		},
+		{
+			"file" : "C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-stretch-subbuild/CMakeFiles/087ae16939f669698bd2a5b2dc2aada8/signalsmith-stretch-populate-build.rule"
+		},
+		{
+			"file" : "C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-stretch-subbuild/CMakeFiles/087ae16939f669698bd2a5b2dc2aada8/signalsmith-stretch-populate-configure.rule"
+		},
+		{
+			"file" : "C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-stretch-subbuild/CMakeFiles/087ae16939f669698bd2a5b2dc2aada8/signalsmith-stretch-populate-download.rule"
+		},
+		{
+			"file" : "C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-stretch-subbuild/CMakeFiles/087ae16939f669698bd2a5b2dc2aada8/signalsmith-stretch-populate-install.rule"
+		},
+		{
+			"file" : "C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-stretch-subbuild/CMakeFiles/087ae16939f669698bd2a5b2dc2aada8/signalsmith-stretch-populate-mkdir.rule"
+		},
+		{
+			"file" : "C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-stretch-subbuild/CMakeFiles/087ae16939f669698bd2a5b2dc2aada8/signalsmith-stretch-populate-patch.rule"
+		},
+		{
+			"file" : "C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-stretch-subbuild/CMakeFiles/087ae16939f669698bd2a5b2dc2aada8/signalsmith-stretch-populate-test.rule"
+		},
+		{
+			"file" : "C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-stretch-subbuild/CMakeFiles/087ae16939f669698bd2a5b2dc2aada8/signalsmith-stretch-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"signalsmith-stretch-populate"
+		],
+		"name" : "signalsmith-stretch-populate"
+	}
+}

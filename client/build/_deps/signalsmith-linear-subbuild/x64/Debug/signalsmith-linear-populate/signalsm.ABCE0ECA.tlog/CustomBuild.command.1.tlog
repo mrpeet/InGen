@@ -1,0 +1,150 @@
+^C:\USERS\PEETB\DESKTOP\INGEN\CLIENT\BUILD\_DEPS\SIGNALSMITH-LINEAR-SUBBUILD\CMAKEFILES\57BB5A472890412CD45FB4621F144446\SIGNALSMITH-LINEAR-POPULATE-MKDIR.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -Dcfgdir=/Debug -P C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-linear-subbuild/signalsmith-linear-populate-prefix/tmp/signalsmith-linear-populate-mkdirs.cmake
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-linear-subbuild/signalsmith-linear-populate-prefix/src/signalsmith-linear-populate-stamp/Debug/signalsmith-linear-populate-mkdir
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\PEETB\DESKTOP\INGEN\CLIENT\BUILD\_DEPS\SIGNALSMITH-LINEAR-SUBBUILD\CMAKEFILES\57BB5A472890412CD45FB4621F144446\SIGNALSMITH-LINEAR-POPULATE-DOWNLOAD.RULE
+setlocal
+cd C:\Users\peetb\Desktop\InGen\client\build\_deps
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE -P C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-linear-subbuild/signalsmith-linear-populate-prefix/tmp/signalsmith-linear-populate-gitclone.cmake
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-linear-subbuild/signalsmith-linear-populate-prefix/src/signalsmith-linear-populate-stamp/Debug/signalsmith-linear-populate-download
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\PEETB\DESKTOP\INGEN\CLIENT\BUILD\_DEPS\SIGNALSMITH-LINEAR-SUBBUILD\CMAKEFILES\57BB5A472890412CD45FB4621F144446\SIGNALSMITH-LINEAR-POPULATE-UPDATE.RULE
+setlocal
+cd C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-linear-src
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -Dcan_fetch=YES -DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE -P C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-linear-subbuild/signalsmith-linear-populate-prefix/tmp/signalsmith-linear-populate-gitupdate.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\PEETB\DESKTOP\INGEN\CLIENT\BUILD\_DEPS\SIGNALSMITH-LINEAR-SUBBUILD\CMAKEFILES\57BB5A472890412CD45FB4621F144446\SIGNALSMITH-LINEAR-POPULATE-PATCH.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-linear-subbuild/signalsmith-linear-populate-prefix/src/signalsmith-linear-populate-stamp/Debug/signalsmith-linear-populate-patch
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\PEETB\DESKTOP\INGEN\CLIENT\BUILD\_DEPS\SIGNALSMITH-LINEAR-SUBBUILD\CMAKEFILES\57BB5A472890412CD45FB4621F144446\SIGNALSMITH-LINEAR-POPULATE-CONFIGURE.RULE
+setlocal
+cd C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-linear-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-linear-subbuild/signalsmith-linear-populate-prefix/src/signalsmith-linear-populate-stamp/Debug/signalsmith-linear-populate-configure
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\PEETB\DESKTOP\INGEN\CLIENT\BUILD\_DEPS\SIGNALSMITH-LINEAR-SUBBUILD\CMAKEFILES\57BB5A472890412CD45FB4621F144446\SIGNALSMITH-LINEAR-POPULATE-BUILD.RULE
+setlocal
+cd C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-linear-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-linear-subbuild/signalsmith-linear-populate-prefix/src/signalsmith-linear-populate-stamp/Debug/signalsmith-linear-populate-build
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\PEETB\DESKTOP\INGEN\CLIENT\BUILD\_DEPS\SIGNALSMITH-LINEAR-SUBBUILD\CMAKEFILES\57BB5A472890412CD45FB4621F144446\SIGNALSMITH-LINEAR-POPULATE-INSTALL.RULE
+setlocal
+cd C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-linear-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-linear-subbuild/signalsmith-linear-populate-prefix/src/signalsmith-linear-populate-stamp/Debug/signalsmith-linear-populate-install
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\PEETB\DESKTOP\INGEN\CLIENT\BUILD\_DEPS\SIGNALSMITH-LINEAR-SUBBUILD\CMAKEFILES\57BB5A472890412CD45FB4621F144446\SIGNALSMITH-LINEAR-POPULATE-TEST.RULE
+setlocal
+cd C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-linear-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-linear-subbuild/signalsmith-linear-populate-prefix/src/signalsmith-linear-populate-stamp/Debug/signalsmith-linear-populate-test
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\PEETB\DESKTOP\INGEN\CLIENT\BUILD\_DEPS\SIGNALSMITH-LINEAR-SUBBUILD\CMAKEFILES\E9A8C56B618BD46C29D90D53C2B9CBB3\SIGNALSMITH-LINEAR-POPULATE-COMPLETE.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-linear-subbuild/CMakeFiles/Debug
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-linear-subbuild/CMakeFiles/Debug/signalsmith-linear-populate-complete
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-linear-subbuild/signalsmith-linear-populate-prefix/src/signalsmith-linear-populate-stamp/Debug/signalsmith-linear-populate-done
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\PEETB\DESKTOP\INGEN\CLIENT\BUILD\_DEPS\SIGNALSMITH-LINEAR-SUBBUILD\CMAKEFILES\8DB05DA6B7DE9347AB7C3EA534764463\SIGNALSMITH-LINEAR-POPULATE.RULE
+setlocal
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\PEETB\DESKTOP\INGEN\CLIENT\BUILD\_DEPS\SIGNALSMITH-LINEAR-SUBBUILD\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-linear-subbuild -BC:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-linear-subbuild --check-stamp-file C:/Users/peetb/Desktop/InGen/client/build/_deps/signalsmith-linear-subbuild/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

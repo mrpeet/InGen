@@ -57,24 +57,26 @@ bool PresetArchiver::exportPreset (const juce::File& targetFile,
     bool compressionSucceeded = false;
     
     {
+        juce::ZipFile::Builder builder;
+        
+        // Add JSON metadata entry
+        builder.addFile (stagedJson, 9, "preset.json");
+        
+        // Add Layer A sound entry
+        builder.addFile (stagedSampleA, 9, "layerA_sample.wav");
+        
+        // Add Layer B variations sound entries
+        for (size_t i = 0; i < stagedSamplesB.size(); ++i)
+        {
+            builder.addFile (stagedSamplesB[i], 9, presetMetadata.samplePathsB[i]);
+        }
+        
         juce::FileOutputStream outStream (targetFile);
         if (outStream.openedOk())
         {
-            juce::ZipFile::Compressor compressor (outStream);
-            
-            // Add JSON metadata entry
-            compressor.addFile (stagedJson, 9, "preset.json");
-            
-            // Add Layer A sound entry
-            compressor.addFile (stagedSampleA, 9, "layerA_sample.wav");
-            
-            // Add Layer B variations sound entries
-            for (size_t i = 0; i < stagedSamplesB.size(); ++i)
-            {
-                compressor.addFile (stagedSamplesB[i], 9, presetMetadata.samplePathsB[i]);
-            }
-            
-            compressionSucceeded = true;
+            outStream.setPosition (0);
+            outStream.truncate();
+            compressionSucceeded = builder.writeToStream (outStream, nullptr);
         }
     }
 

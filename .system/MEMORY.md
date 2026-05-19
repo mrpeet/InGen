@@ -59,4 +59,25 @@ This file captures the fundamental reasoning ("Why") behind architectural patter
   3. *Uncompromised Portability:* When importing, `PresetArchiver` decompresses the package using `juce::ZipFile` into an isolation directory, parses `preset.json` back into C++ structures via `PresetSerializer`, and binds the WAV files to the active sampler voices.
   4. *Housekeeping:* The staging directory is recursively deleted immediately after compression to guarantee that no orphaned gigabytes clutter the user's hard drive.
 
+## [2026-05-19] - Vector UI & Waveform Rendering
+
+### 8. High-Performance Cached Peak-Path Waveform Rendering
+- **Context:** Rendering real-time waveforms with millions of audio samples inside a 60fps GUI can cause extreme CPU load, block the message loop, and lead to sluggish DAW UI responses.
+- **Decision:** We designed a dynamic pixel-cache scanning approach inside `WaveformVisualizer`.
+- **Reasoning:** 
+  1. *Divided Scanning:* Instead of drawing all sample vertices, the component scans the underlying audio buffer only at pixel-boundaries, computing local min/max peaks for each column.
+  2. *Zero-Crossing Snapping:* When the user drags start/end crop boundaries, mouse coordinates are translated to samples, snapped to zero-crossing boundary transitions in real-time, and bound directly to the active sampler voice, preventing audible clicks without causing audio-thread locking.
+  3. *Frosted Glassmorphism:* Utilizes high-precision vector strokes in `GlassmorphicLookAndFeel` with smooth alpha-blended arcs, glowing cyber-neon colors, and rounded corners to establish a premium standalone & VST3 visual experience.
+
+## [2026-05-19] - Decoupling VST2 & DAW Validation
+
+### 9. Steinberg VST2 Legacy Decoupling and Real-time Profiling
+- **Context:** Modern hosts and developer environments do not ship with discontinued VST2 headers, but VST3 wrappers in JUCE default to including them for replacement compatibility.
+- **Decision:** Explicitly bound `JUCE_VST3_CAN_REPLACE_VST2=0` preprocessor macros at the CMake layer.
+- **Reasoning:**
+  1. *Bypassing Legacy Headers:* Tells the VST3 preprocessor compiler to skip compiling legacy wrapper components requiring discontinued Steinberg files, eliminating compile-time directory errors.
+  2. *Zero-Allocation Audio Thread:* Verified that our dual-layer rendering blocks (`processBlock`) perform no system allocations, file accesses, or thread-locking operations. Temporary workspaces and deserialization occur solely on the Message manager thread or isolated async thread pools (`SampleAnalysisJob`), maintaining strict audio thread safety and ensuring glitch-free audio performance under heavy load in host DAWs.
+
+
+
 

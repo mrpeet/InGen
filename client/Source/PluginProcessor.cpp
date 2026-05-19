@@ -74,13 +74,13 @@ void InGenSamplerAudioProcessor::releaseResources()
 {
 }
 
-bool InGenSamplerAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts)
+bool InGenSamplerAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
-    if (layouts.getMainOutput() != juce::AudioChannelSet::mono()
-     && layouts.getMainOutput() != juce::AudioChannelSet::stereo())
+    if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
+     && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
         return false;
 
-    if (layouts.getMainOutput() != layouts.getMainInput())
+    if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
         return false;
 
     return true;

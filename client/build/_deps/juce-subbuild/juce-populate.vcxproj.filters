@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\juce-subbuild\CMakeFiles\afd227b53a66d18588c453c9da1a9f4c\juce-populate-mkdir.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\juce-subbuild\CMakeFiles\afd227b53a66d18588c453c9da1a9f4c\juce-populate-download.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\juce-subbuild\CMakeFiles\afd227b53a66d18588c453c9da1a9f4c\juce-populate-update.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\juce-subbuild\CMakeFiles\afd227b53a66d18588c453c9da1a9f4c\juce-populate-patch.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\juce-subbuild\CMakeFiles\afd227b53a66d18588c453c9da1a9f4c\juce-populate-configure.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\juce-subbuild\CMakeFiles\afd227b53a66d18588c453c9da1a9f4c\juce-populate-build.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\juce-subbuild\CMakeFiles\afd227b53a66d18588c453c9da1a9f4c\juce-populate-install.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\juce-subbuild\CMakeFiles\afd227b53a66d18588c453c9da1a9f4c\juce-populate-test.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\juce-subbuild\CMakeFiles\34b4c5c14d052e031522fd3839ee6a1a\juce-populate-complete.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\juce-subbuild\CMakeFiles\a4fceb314febc3121d919cbe04ba98b8\juce-populate.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\juce-subbuild\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\juce-subbuild\CMakeFiles\juce-populate" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{4D57076A-0D15-3875-B408-B471F378FEC0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

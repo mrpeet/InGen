@@ -1,0 +1,20 @@
+^C:\USERS\PEETB\DESKTOP\INGEN\CLIENT\BUILD\CMAKEFILES\CFBCD39A42D948325A8EFAF51B5A3997\INGENSAMPLER_RESOURCES.RC.RULE
+setlocal
+_deps\juce-build\tools\extras\Build\juceaide\juceaide_artefacts\Debug\juceaide.exe rcfile C:/Users/peetb/Desktop/InGen/client/build/InGenSampler_artefacts/JuceLibraryCode/Info.txt C:/Users/peetb/Desktop/InGen/client/build/InGenSampler_artefacts/JuceLibraryCode/InGenSampler_resources.rc
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\PEETB\DESKTOP\INGEN\CLIENT\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/peetb/Desktop/InGen/client -BC:/Users/peetb/Desktop/InGen/client/build --check-stamp-file C:/Users/peetb/Desktop/InGen/client/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

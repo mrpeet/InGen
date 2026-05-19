@@ -68,6 +68,8 @@ public:
     int cropEnd;
 
     juce::ADSR::Parameters adsrParams;
+
+    JUCE_DECLARE_WEAK_REFERENCEABLE (SamplerSoundA)
 };
 
 /**
@@ -107,7 +109,7 @@ public:
         if (variations.empty())
             return nullptr;
 
-        indexToUse = currentRRIndex % variations.size();
+        indexToUse = static_cast<int> (currentRRIndex % variations.size());
         currentRRIndex++;
         return &variations[indexToUse];
     }
@@ -120,8 +122,8 @@ public:
     }
 
     const juce::String foleyName;
-    const FoleyTriggerMode triggerMode;
-    const juce::Range<float> velocityRange;
+    FoleyTriggerMode triggerMode;
+    juce::Range<float> velocityRange;
 
 private:
     std::vector<juce::AudioBuffer<float>> variations;

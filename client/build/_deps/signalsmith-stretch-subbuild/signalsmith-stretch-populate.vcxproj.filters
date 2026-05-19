@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-stretch-subbuild\CMakeFiles\087ae16939f669698bd2a5b2dc2aada8\signalsmith-stretch-populate-mkdir.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-stretch-subbuild\CMakeFiles\087ae16939f669698bd2a5b2dc2aada8\signalsmith-stretch-populate-download.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-stretch-subbuild\CMakeFiles\087ae16939f669698bd2a5b2dc2aada8\signalsmith-stretch-populate-update.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-stretch-subbuild\CMakeFiles\087ae16939f669698bd2a5b2dc2aada8\signalsmith-stretch-populate-patch.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-stretch-subbuild\CMakeFiles\087ae16939f669698bd2a5b2dc2aada8\signalsmith-stretch-populate-configure.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-stretch-subbuild\CMakeFiles\087ae16939f669698bd2a5b2dc2aada8\signalsmith-stretch-populate-build.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-stretch-subbuild\CMakeFiles\087ae16939f669698bd2a5b2dc2aada8\signalsmith-stretch-populate-install.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-stretch-subbuild\CMakeFiles\087ae16939f669698bd2a5b2dc2aada8\signalsmith-stretch-populate-test.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-stretch-subbuild\CMakeFiles\f1ceb4cec0df86c03a2b48329de919ce\signalsmith-stretch-populate-complete.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-stretch-subbuild\CMakeFiles\46c2b70bae99abf0b5ba15b407a3991d\signalsmith-stretch-populate.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-stretch-subbuild\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\peetb\Desktop\InGen\client\build\_deps\signalsmith-stretch-subbuild\CMakeFiles\signalsmith-stretch-populate" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{A3639E16-54A9-31E5-8D00-7D23356A90E4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

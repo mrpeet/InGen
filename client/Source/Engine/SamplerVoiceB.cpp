@@ -65,7 +65,7 @@ void SamplerVoiceB::triggerSound (float velocity)
     sourceSamplePosition = 0.0;
     playbackRatio = soundB->getVariationSampleRate (variationIndex) / getSampleRate();
     
-    noteVelocity = velocity;
+    triggerVelocity = velocity;
     isPlaying = true;
 }
 
@@ -130,7 +130,7 @@ void SamplerVoiceB::renderNextBlock (juce::AudioBuffer<float>& outputBuffer,
             break;
         }
 
-        float volumeMultiplier = noteVelocity;
+        float volumeMultiplier = triggerVelocity;
 
         for (int channel = 0; channel < outputBuffer.getNumChannels(); ++channel)
         {
