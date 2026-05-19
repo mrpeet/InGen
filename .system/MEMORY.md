@@ -21,3 +21,42 @@ This file captures the fundamental reasoning ("Why") behind architectural patter
 - **Problem:** Running models locally on consumer GPUs is resource-heavy, and we might want to deploy cloud endpoints (like OpenAI or custom cloud instances) for web users or lighter installations.
 - **Decision:** Defined a pure abstract C++ class `AudioGeneratorAPI` in the network layer.
 - **Why:** This ensures the DSP and UI code have zero hard dependencies on local servers or Python environments. Swapping between local generation and cloud providers requires only switching a single subclass factory without refactoring any core plugin logic.
+
+## [2026-05-19] - DSP & Playback Engine Implementations
+
+### 4. Self-Contained C++ YIN Pitch Detector
+- **Context:** AudioCraft outputs tonal WAV files, but they are not mathematically guaranteed to be in perfect pitch or perfectly centered on the expected MIDI note.
+- **Decision:** We implemented a pure, standalone C++ YIN algorithm inside `PitchDetector`.
+- **Reasoning:** By avoiding external heavy DSP frameworks (like Aubio or Librosa), the plugin compiles in seconds, is self-contained, and runs extremely fast. We utilize:
+  1. *Cumulative Mean Normalized Difference* to effectively eliminate octave errors.
+  2. *Parabolic Interpolation* to extract sub-sample frequency information ($f_0$) from the discrete difference function.
+  3. Cents deviation calculations: $\text{cents} = 1200 \cdot \log_2(f_{\text{actual}} / f_{\text{target}})$, which are delivered to the playback engine for fine-tuning.
+
+### 5. Sliding RMS Transient Snapping & Zero-Crossing Lock
+- **Context:** AI-generated samples often contain small silence padding at the beginning or decay slowly into noise.
+- **Problem:** Inconsistent start times destroy the feel of a playable instrument, while slicing audio at arbitrary points creates sudden voltage jumps, causing audible clicks ("pops").
+- **Decision:** Created `TransientDetector` which:
+  1. Uses a 256-sample sliding RMS window to locate the sound onset (transient start) and decay floor (silence end).
+  2. Searches bidirectionally around target crop markers to lock the play boundary onto the nearest perfect zero-crossing ($x[i] \cdot x[i-1] \le 0$).
+- **Reasoning:** Zero-crossing snapping guarantees crackle-free sample triggers without forcing a slow volume fade-in at the DSP voice layer.
+
+### 6. Voice Decoupling: Resampling and Release-Trigger Wait States
+- **Context:** Layer A (tonal) and Layer B (foley) have fundamentally different playback mechanics.
+- **Decision:** Mapped distinct voice logic:
+  - *Layer A (Tonal):* Utilizes fractional linear-interpolation resampling. The step ratio ($playbackRatio = 2^{\frac{semitones}{12}} \cdot \frac{SR_{sample}}{SR_{host}}$) combines MIDI distance and the YIN-measured cent offset. This enables flawless pitch correction.
+  - *Layer B (Foley):* Handles unpitched mechanics. It supports *Velocity Zones* (triggering clicking noises only on hard attacks), *Round-Robin* buffer cycling, and *Note-Off (Release Triggers)*.
+  - *Wait-State Architecture:* Release foley voices remain completely silent during `startNote`, entering an active wait state. They are only triggered when `stopNote` is called by the host DAW (simulating mechanical dampers landing on strings).
+
+## [2026-05-19] - Serialization & Preset Management
+
+### 7. Self-Contained Preset Staging and Zip Compression (.ingsam)
+- **Context:** Presets generated using local neural models require multiple physical `.wav` files (tonal layers + foley round-robin layers) alongside their numerical/text configuration (JSON).
+- **Problem:** Storing absolute local file paths in presets breaks when presets are shared between users or moved to other directories.
+- **Decision:** We established a standardized, self-contained zip packaging format `.ingsam` coordinated by `PresetArchiver`.
+- **Reasoning:**
+  1. *Staging Workspace:* When exporting, the archiver allocates a temporary folder in the system Temp directory, copies the target assets into it under generic relative filenames (`layerA_sample.wav`, `layerB_variation_X.wav`), and generates a `preset.json` detailing crop coordinates, ADSR envelopes, and prompt instructions.
+  2. *Relative Mapping:* Inside the ZIP, all sample paths are mapped relatively.
+  3. *Uncompromised Portability:* When importing, `PresetArchiver` decompresses the package using `juce::ZipFile` into an isolation directory, parses `preset.json` back into C++ structures via `PresetSerializer`, and binds the WAV files to the active sampler voices.
+  4. *Housekeeping:* The staging directory is recursively deleted immediately after compression to guarantee that no orphaned gigabytes clutter the user's hard drive.
+
+

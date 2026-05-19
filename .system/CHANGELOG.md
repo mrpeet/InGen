@@ -24,3 +24,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implemented static WAV caching (`/cache/`) and mock endpoints for tonal and foley synthesis in the FastAPI server.
 - Set up local Python virtual environment (`server/venv`), installed starlette, uvicorn, pydantic, and fastapi dependencies, and launched the server running in the background at `http://127.0.0.1:8000`.
 
+## [0.4.0] - 2026-05-19
+
+### Added
+- Created **client/Source/DSP/PitchDetector.h/cpp** implementing a self-contained YIN fundamental frequency estimation engine and MIDI mapping utility.
+- Created **client/Source/DSP/TransientDetector.h/cpp** implementing sliding RMS window energy onset tracking and sub-sample zero-crossing alignment search.
+- Created **client/Source/DSP/SampleAnalysisJob.h/cpp** providing a secure, asynchronous background Thread to load WAV files, compute crop markers, execute YIN pitch detection, and deliver results thread-safely to the message thread via `juce::MessageManager::callAsync`.
+- Updated **client/CMakeLists.txt** to compile the three new DSP modules and link the necessary **juce_audio_formats** dependency.
+
+## [0.5.0] - 2026-05-19
+
+### Added
+- Integrated **signalsmith-stretch** via CMake FetchContent to provide a world-class spectral phase-vocoder SDK with zero compilation dependencies.
+- Created **client/Source/Engine/SamplerSoundBase.h** mapping properties of `SamplerSoundA` (tonal pitch, crop markers, ADSR params) and `SamplerSoundB` (foley, velocity zones, and variations).
+- Created **client/Source/Engine/SamplerVoiceA.h/cpp** implementing high-performance resampled linear-interpolation playback with dynamic host sample rate scaling and active ADSR envelope triggers.
+- Created **client/Source/Engine/SamplerVoiceB.h/cpp** implementing unpitched foley sample playback supporting strike-velocity checks, Round-Robin cycling, and release-triggering (Note-Off).
+- Created **client/Source/Engine/SamplerEngine.h/cpp** coordinating both layer synthesisers in parallel and exposing public loading hooks.
+- Integrated **SamplerEngine** into **InGenSamplerAudioProcessor** to orchestrate thread-safe MIDI processing and parallel block rendering.
+- Updated **client/CMakeLists.txt** to compile the seven new Sampler Engine playback components.
+
+## [0.6.0] - 2026-05-19
+
+### Added
+- Created **client/Source/Serialization/PresetSerializer.h/cpp** implementing JSON serialization mapping for dynamic objects, ADSR values, and multi-sample lists.
+- Created **client/Source/Serialization/PresetArchiver.h/cpp** implementing export and import wrappers for self-contained `.ingsam` ZIP packages, including recursive temporary workspace setup and cleanup.
+- Updated **client/CMakeLists.txt** to compile the four new serialization files.
+
+
+
+

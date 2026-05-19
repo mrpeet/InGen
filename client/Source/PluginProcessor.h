@@ -1,6 +1,7 @@
 #pragma once
 
 #include <juce_audio_processors/juce_audio_processors.h>
+#include "Engine/SamplerEngine.h"
 
 namespace ingen {
 
@@ -36,7 +37,12 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    // Public access to the dual-layer sampler engine
+    SamplerEngine& getSamplerEngine() { return samplerEngine; }
+
 private:
+    SamplerEngine samplerEngine;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (InGenSamplerAudioProcessor)
 };
 

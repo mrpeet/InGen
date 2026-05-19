@@ -67,7 +67,7 @@ void InGenSamplerAudioProcessor::changeProgramName (int index, const juce::Strin
 
 void InGenSamplerAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    juce::ignoreUnused (sampleRate, samplesPerBlock);
+    samplerEngine.prepareToPlay (sampleRate, samplesPerBlock);
 }
 
 void InGenSamplerAudioProcessor::releaseResources()
@@ -96,8 +96,8 @@ void InGenSamplerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    // In Phase 4, we will route midiMessages to both Layer A and Layer B synthesizers here
-    juce::ignoreUnused (midiMessages);
+    // Render Layer A & Layer B synthesiser engines in parallel
+    samplerEngine.processBlock (buffer, midiMessages);
 }
 
 bool InGenSamplerAudioProcessor::hasEditor() const
