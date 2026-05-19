@@ -112,8 +112,15 @@ int PitchDetector::absoluteThreshold(const float* yinBuffer, int size, float thr
         }
     }
 
-    // Fallback to the absolute best local minimum found if nothing was below threshold
-    return globalMinimumIndex;
+    // Fallback to the absolute best local minimum found if nothing was below threshold,
+    // but only if it represents a reasonably periodic signal (globalMinimumValue < 0.35f).
+    // If the correlation dip is too weak, it is unpitched noise.
+    if (globalMinimumValue < 0.35f)
+    {
+        return globalMinimumIndex;
+    }
+    
+    return -1;
 }
 
 float PitchDetector::parabolicInterpolation(const float* yinBuffer, int tau)

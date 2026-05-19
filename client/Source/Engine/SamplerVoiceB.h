@@ -40,6 +40,8 @@ private:
 
     bool isWaitingForRelease = false;
     bool isPlaying = false;
+    bool isPlayForward = true;
+    std::vector<float> filterState;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SamplerVoiceB)
 };

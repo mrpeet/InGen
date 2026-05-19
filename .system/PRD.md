@@ -8,7 +8,7 @@
 ---
 
 ## 2. Product Objectives
-- **Generative Synergy:** Seamlessly orchestrate local Python AI generation (Meta AudioCraft) and cloud-based fallback APIs in an intuitive, unified UI.
+- **Generative Synergy:** Seamlessly orchestrate local Python AI generation (Meta AudioCraft AudioGen for both tonal and foley layers) and cloud-based fallback APIs in an intuitive, unified UI.
 - **Perfect Playability:** Automatically transform raw, out-of-tune generated audio files into highly accurate, zero-crossing cropped, and pitch-corrected MIDI maps.
 - **Organic Depth:** Enable double-layer synthesis where tonal components are separate from acoustic "mechanical noises" to mimic the tactile feel of physical instruments (e.g., key clicks, pedal squeaks).
 - **DAW Integration:** Provide rock-solid real-time DSP performance in major DAWs (VST3/AU/Standalone formats).
@@ -29,7 +29,9 @@
 ## 4. Functional Requirements
 
 ### 4.1. Network & Generation Layer
-- **Local Generation Server:** A Python backend exposing endpoints for Meta AudioCraft models (MusicGen for tonal samples, AudioGen for mechanical noises).
+- **Local Generation Server:** A Python backend exposing endpoints using the Meta AudioCraft **AudioGen** model for *both* layers (saving significant VRAM/RAM by loading only a single model and avoiding MusicGen's musical melody-looping tendencies).
+  * *Tonal Generation (Layer A):* Employs AudioGen with prompt enrichment that enforces a pure, sustained, monophonic single note holding a pitch (max 8.0s duration, set to 6.0s default).
+  * *Foley/Mechanical Generation (Layer B):* Employs AudioGen with prompt enrichment that enforces short, unpitched, non-instrumental mechanical noises (max 3.0s duration, set to 1.5s default) for organic tactile texture.
 - **Abstract C++ API Client:** An abstract interface `AudioGeneratorAPI` in the JUCE code. A `LocalPythonServerClient` subclass will execute async HTTP POST requests. A `CloudAPIFallbackClient` can be easily substituted.
 - **Generation Parameters:** Prompt text, sample count (notes/octaves), foley count, duration, temperature.
 

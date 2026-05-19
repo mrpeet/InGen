@@ -35,6 +35,7 @@ private:
     double sourceSamplePosition = 0.0;
     double playbackRatio = 1.0;
     float noteVelocity = 0.0f;
+    bool isPlayForward = true;
 
     juce::ADSR adsr;
 

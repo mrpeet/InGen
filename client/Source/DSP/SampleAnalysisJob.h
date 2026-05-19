@@ -16,6 +16,7 @@ class SampleAnalysisJob : private juce::Thread {
 public:
     using CompletionCallback = std::function<void(const AudioResult& updatedResult, 
                                                   const juce::AudioBuffer<float>& loadedBuffer,
+                                                  double sampleRate,
                                                   int cropStartSample, 
                                                   int cropEndSample)>;
 

@@ -40,8 +40,49 @@ public:
     // Public access to the dual-layer sampler engine
     SamplerEngine& getSamplerEngine() { return samplerEngine; }
 
+    enum class ServerStatus
+    {
+        offline,
+        launching,
+        online
+    };
+
+    ServerStatus getServerStatus() const { return serverStatus; }
+    bool getIsGenerating() const { return isGenerating; }
+    void setIsGenerating (bool generating) { isGenerating = generating; }
+    
+    void launchServerAsync();
+    void stopServer();
+    void checkServerHealth();
+
 private:
+    class HealthPollerThread : public juce::Thread
+    {
+    public:
+        HealthPollerThread (InGenSamplerAudioProcessor& p)
+            : juce::Thread ("ServerHealthPoller"), processor (p)
+        {}
+
+        void run() override
+        {
+            while (!threadShouldExit())
+            {
+                processor.checkServerHealth();
+                wait (2000); // Query health endpoint every 2 seconds
+            }
+        }
+
+    private:
+        InGenSamplerAudioProcessor& processor;
+    };
+
     SamplerEngine samplerEngine;
+
+    // Server process and background polling control
+    std::atomic<ServerStatus> serverStatus { ServerStatus::offline };
+    std::atomic<bool> isGenerating { false };
+    juce::ChildProcess serverProcess;
+    HealthPollerThread pollerThread { *this };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (InGenSamplerAudioProcessor)
 };

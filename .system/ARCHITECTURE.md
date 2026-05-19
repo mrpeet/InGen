@@ -4,7 +4,7 @@
 
 The system is designed as a hybrid client-server application. 
 - **Frontend (Client):** A C++ JUCE plugin compiled as VST3, AU, or Standalone. It handles real-time MIDI parsing, dual-layer sample playback (DSP), offline audio analysis, and user interactions.
-- **Backend (Server):** A local Python FastAPI server running in a background process. It hosts deep learning models (Meta AudioCraft: MusicGen and AudioGen) to generate audio files asynchronously.
+- **Backend (Server):** A local Python FastAPI server running in a background process. It hosts the Meta AudioCraft **AudioGen** model to generate both tonal and foley audio files asynchronously, loaded only once in VRAM/RAM for maximum resource efficiency.
 
 ```mermaid
 graph TD
@@ -20,17 +20,15 @@ graph TD
     subgraph Local Python Server
         API[FastAPI Router]
         GenQueue[Generation Queue]
-        MusicGen[MusicGen Model]
-        AudioGen[AudioGen Model]
+        AudioGen[AudioGen Model (Dual-Use)]
         DiskCache[WAV Cache /tmp]
     end
 
     UI -->|Trigger prompt & settings| NetClient
     NetClient -->|HTTP POST Request| API
     API -->|Queue task| GenQueue
-    GenQueue -->|Synthesize melody| MusicGen
-    GenQueue -->|Synthesize foley| AudioGen
-    MusicGen -->|Save WAV| DiskCache
+    GenQueue -->|Synthesize Tonal (Single Note)| AudioGen
+    GenQueue -->|Synthesize Foley (Noise)| AudioGen
     AudioGen -->|Save WAV| DiskCache
     API -->|HTTP 200 File Delivery| NetClient
     NetClient -->|Load raw audio| Analysis

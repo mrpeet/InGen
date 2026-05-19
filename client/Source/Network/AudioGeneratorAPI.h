@@ -12,6 +12,8 @@ namespace ingen {
  */
 struct PromptConfig {
     juce::String prompt;
+    juce::String tonalModel = "audiogen-medium";
+    juce::String foleyModel = "audiogen-medium";
     int noteCount = 5;
     int octaves = 2;
     int foleyCount = 5;

@@ -62,8 +62,15 @@ void SamplerVoiceB::triggerSound (float velocity)
         return;
     }
 
-    sourceSamplePosition = 0.0;
     playbackRatio = soundB->getVariationSampleRate (variationIndex) / getSampleRate();
+    
+    isPlayForward = !soundB->isReversed;
+    sourceSamplePosition = soundB->isReversed ? 
+                           static_cast<double> (activeVariationBuffer->getNumSamples() - 2) : 
+                           0.0;
+    
+    // Reset filter states for click-free dynamic filtering
+    filterState.assign (2, 0.0f);
     
     triggerVelocity = velocity;
     isPlaying = true;
@@ -122,15 +129,31 @@ void SamplerVoiceB::renderNextBlock (juce::AudioBuffer<float>& outputBuffer,
         float alpha = static_cast<float> (sourceSamplePosition - pos);
 
         // Terminate play immediately if we reach the end of the one-shot sample
-        if (pos >= totalSamples - 1)
+        if (isPlayForward)
         {
-            clearCurrentNote();
-            isPlaying = false;
-            activeVariationBuffer = nullptr;
-            break;
+            if (pos >= totalSamples - 1)
+            {
+                clearCurrentNote();
+                isPlaying = false;
+                activeVariationBuffer = nullptr;
+                break;
+            }
+        }
+        else
+        {
+            if (pos < 0)
+            {
+                clearCurrentNote();
+                isPlaying = false;
+                activeVariationBuffer = nullptr;
+                break;
+            }
         }
 
         float volumeMultiplier = triggerVelocity;
+        
+        // Dynamic one-pole filter coefficient based on velocity (soft strikes = darker/warmer, hard = brighter)
+        float a = triggerVelocity * 0.9f + 0.1f; // ranges from 0.1 to 1.0
 
         for (int channel = 0; channel < outputBuffer.getNumChannels(); ++channel)
         {
@@ -141,10 +164,21 @@ void SamplerVoiceB::renderNextBlock (juce::AudioBuffer<float>& outputBuffer,
             
             float interpolatedSample = val1 + alpha * (val2 - val1);
             
-            destChannelData[channel][startSample + i] += interpolatedSample * volumeMultiplier;
+            // Auto-resize filterState vector if needed for multi-channel compatibility
+            if (channel >= static_cast<int> (filterState.size()))
+                filterState.push_back (0.0f);
+
+            // One-Pole Low-Pass filtering: y[n] = y[n-1] + a * (x[n] - y[n-1])
+            float filteredSample = filterState[channel] + a * (interpolatedSample - filterState[channel]);
+            filterState[channel] = filteredSample;
+            
+            destChannelData[channel][startSample + i] += filteredSample * volumeMultiplier;
         }
 
-        sourceSamplePosition += playbackRatio;
+        if (isPlayForward)
+            sourceSamplePosition += playbackRatio;
+        else
+            sourceSamplePosition -= playbackRatio;
     }
 }
 

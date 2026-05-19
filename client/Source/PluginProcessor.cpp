@@ -8,10 +8,18 @@ InGenSamplerAudioProcessor::InGenSamplerAudioProcessor()
                       .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true))
 {
+    // Start background health poller thread
+    pollerThread.startThread();
 }
 
 InGenSamplerAudioProcessor::~InGenSamplerAudioProcessor()
 {
+    // Gracefully stop the polling thread first, waiting indefinitely until it's dead
+    pollerThread.signalThreadShouldExit();
+    pollerThread.stopThread (-1);
+
+    // Shutdown the Python server process
+    stopServer();
 }
 
 const juce::String InGenSamplerAudioProcessor::getName() const
@@ -118,6 +126,95 @@ void InGenSamplerAudioProcessor::getStateInformation (juce::MemoryBlock& destDat
 void InGenSamplerAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     juce::ignoreUnused (data, sizeInBytes);
+}
+
+void InGenSamplerAudioProcessor::launchServerAsync()
+{
+    if (serverStatus == ServerStatus::online || serverStatus == ServerStatus::launching)
+        return;
+
+    serverStatus = ServerStatus::launching;
+    
+    juce::Thread::launch ([this]() {
+        juce::String pythonPath = "C:\\Users\\peetb\\Desktop\\InGen\\server\\venv\\Scripts\\python.exe";
+        juce::String scriptPath = "C:\\Users\\peetb\\Desktop\\InGen\\server\\app\\main.py";
+        
+        juce::File pythonFile (pythonPath);
+        juce::File scriptFile (scriptPath);
+        
+        if (pythonFile.existsAsFile() && scriptFile.existsAsFile())
+        {
+            // Launch the python process in a new, visible cmd window so the user can monitor live logs
+            juce::String command = "cmd.exe /c start \"InGen AI Server\" cmd /c \"\"" + pythonPath + "\" \"" + scriptPath + "\"\"";
+            
+            bool started = serverProcess.start (command);
+            if (started)
+            {
+                juce::Logger::writeToLog ("[InGen Server Launcher] Child process spawned successfully.");
+            }
+            else
+            {
+                juce::Logger::writeToLog ("[InGen Server Launcher] FAILED to spawn child process.");
+                serverStatus = ServerStatus::offline;
+            }
+        }
+        else
+        {
+            juce::Logger::writeToLog ("[InGen Server Launcher] Error: python.exe or main.py not found.");
+            serverStatus = ServerStatus::offline;
+        }
+    });
+}
+
+void InGenSamplerAudioProcessor::stopServer()
+{
+    // 1. Send quick async POST to /shutdown to let the server shut itself down elegantly
+    juce::URL url ("http://127.0.0.1:8071/shutdown");
+    int statusCode = 0;
+    auto options = juce::URL::InputStreamOptions (juce::URL::ParameterHandling::inPostData)
+                       .withStatusCode (&statusCode)
+                       .withConnectionTimeoutMs (1000);
+    
+    auto urlWithData = url.withPOSTData ("");
+    std::unique_ptr<juce::InputStream> stream (urlWithData.createInputStream (options));
+    juce::ignoreUnused (stream);
+
+    // 2. Force kill the child process if still active
+    serverProcess.kill();
+    serverStatus = ServerStatus::offline;
+}
+
+void InGenSamplerAudioProcessor::checkServerHealth()
+{
+    // Skip health checks while active generation is running to avoid socket flooding
+    if (isGenerating.load())
+        return;
+
+    juce::URL url ("http://127.0.0.1:8071/health");
+    int statusCode = 0;
+    auto options = juce::URL::InputStreamOptions (juce::URL::ParameterHandling::inAddress)
+                       .withStatusCode (&statusCode)
+                       .withConnectionTimeoutMs (800); // 800ms fast connection timeout
+    
+    std::unique_ptr<juce::InputStream> stream (url.createInputStream (options));
+    
+    if (stream != nullptr && statusCode == 200)
+    {
+        juce::String responseText = stream->readEntireStreamAsString();
+        juce::var response = juce::JSON::parse (responseText);
+        
+        if (response.getProperty ("status", "error").toString() == "healthy")
+        {
+            serverStatus = ServerStatus::online;
+            return;
+        }
+    }
+    
+    // If it is currently launching, let the launching status remain until it connects or timeout occurs
+    if (serverStatus != ServerStatus::launching)
+    {
+        serverStatus = ServerStatus::offline;
+    }
 }
 
 } // namespace ingen

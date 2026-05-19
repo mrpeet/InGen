@@ -14,6 +14,15 @@ enum class FoleyTriggerMode {
 };
 
 /**
+ * Loop Playback Mode for Sampler Layer A.
+ */
+enum class LoopMode {
+    Off = 0,
+    Forward,
+    PingPong
+};
+
+/**
  * Base JUCE Sound mapping class for InGen Sampler.
  */
 class SamplerSoundBase : public juce::SynthesiserSound {
@@ -35,28 +44,36 @@ public:
                   int midiRootKey,
                   float centsOffset,
                   int cropStartSample,
-                  int cropEndSample)
+                  int cropEndSample,
+                  int minMidiNote = 0,
+                  int maxMidiNote = 127)
         : soundName(name),
           sampleData(std::move(audioBuffer)),
           originalSampleRate(sampleRate),
           rootKey(midiRootKey),
           tuningOffsetCents(centsOffset),
           cropStart(cropStartSample),
-          cropEnd(cropEndSample)
+          cropEnd(cropEndSample),
+          minNote(minMidiNote),
+          maxNote(maxMidiNote)
     {
         // Default standard ADSR parameters
         adsrParams.attack  = 0.01f; // 10ms
         adsrParams.decay   = 0.1f;  // 100ms
         adsrParams.sustain = 1.0f;  // full volume
         adsrParams.release = 0.5f;  // 500ms decay
+
+        // Default loop parameters
+        loopMode = LoopMode::Off;
+        loopStart = cropStartSample;
+        loopEnd = cropEndSample;
+        loopCrossfadePercent = 0.0f;
+        isReversed = false;
     }
 
     bool appliesToNote (int midiNoteNumber) override
     {
-        // Layer A sounds are pitched-interpolated across the entire keyboard
-        // We let the voice filter and stretch accordingly.
-        juce::ignoreUnused (midiNoteNumber);
-        return true;
+        return midiNoteNumber >= minNote && midiNoteNumber <= maxNote;
     }
 
     const juce::String soundName;
@@ -67,7 +84,17 @@ public:
     int cropStart;
     int cropEnd;
 
+    // Loop Configuration
+    LoopMode loopMode;
+    int loopStart;
+    int loopEnd;
+    float loopCrossfadePercent;
+    bool isReversed;
+
     juce::ADSR::Parameters adsrParams;
+    
+    int minNote = 0;
+    int maxNote = 127;
 
     JUCE_DECLARE_WEAK_REFERENCEABLE (SamplerSoundA)
 };
@@ -85,6 +112,7 @@ public:
           triggerMode(mode),
           velocityRange(minVelocity, maxVelocity)
     {
+        isReversed = false;
     }
 
     bool appliesToNote (int midiNoteNumber) override
@@ -121,9 +149,12 @@ public:
         return 44100.0;
     }
 
+    size_t getNumVariations() const { return variations.size(); }
+
     const juce::String foleyName;
     FoleyTriggerMode triggerMode;
     juce::Range<float> velocityRange;
+    bool isReversed;
 
 private:
     std::vector<juce::AudioBuffer<float>> variations;

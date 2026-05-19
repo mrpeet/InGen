@@ -1,0 +1,47 @@
+# C++ / CMake build directories
+client/build/
+build/
+*.user
+*.suo
+*.sln.docstates
+
+# Python Virtual Environment
+server/venv/
+venv/
+.venv/
+env/
+.env/
+
+# Python caching & byte-compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Server cache & generated media
+server/cache/
+*.wav
+*.mp3
+
+# Environment variables & secrets
+.env
+.env.*
+server/.env
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.vcxproj
+*.filters
+
+# System Files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
