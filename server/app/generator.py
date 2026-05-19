@@ -93,6 +93,7 @@ class AudioCraftGenerator:
         self._audio_model = None         # AudioGen Medium
         self._stable_audio_model = None  # Stable Audio Open
         self._magnet_model = None        # Audio-MAGNeT Small
+        self._woosh_model = None         # Woosh DFlow
         print(f"[InGen Generator] Initialized on device: {self.device} (Optimized for multi-model loading)")
 
     def _unload_dormant_models(self, keep_model_type: str):
@@ -109,6 +110,10 @@ class AudioCraftGenerator:
         if keep_model_type != "magnet" and self._magnet_model is not None:
             print("[InGen Generator] Unloading 'facebook/audio-magnet-small' to free VRAM...")
             self._magnet_model = None
+            unloaded = True
+        if keep_model_type != "woosh" and getattr(self, "_woosh_model", None) not in [None, "FAILED"]:
+            print("[InGen Generator] Unloading 'Sony Woosh DFlow' to free VRAM...")
+            self._woosh_model = None
             unloaded = True
         
         if unloaded and torch.cuda.is_available():
@@ -277,6 +282,36 @@ class AudioCraftGenerator:
             self._stable_audio_model = self._stable_audio_model.to(self.device)
             print("[InGen Generator] 'stabilityai/stable-audio-open-1.0' loaded successfully.")
         return self._stable_audio_model
+
+    def get_woosh_model(self):
+        """Lazy load the Sony Woosh DFlow model."""
+        self._unload_dormant_models("woosh")
+        if not hasattr(self, "_woosh_model"):
+            self._woosh_model = None
+            
+        if self._woosh_model is None:
+            server_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            woosh_dir = os.path.join(server_dir, "models", "woosh")
+            
+            if woosh_dir not in sys.path:
+                sys.path.append(woosh_dir)
+                
+            try:
+                from woosh.model.flowmap_from_pretrained import FlowMapFromPretrained
+                from woosh.components.base import LoadConfig
+                
+                print("[InGen Generator] Loading 'Sony Woosh DFlow' model...")
+                checkpoint_path = os.path.join(woosh_dir, "checkpoints", "Woosh-DFlow")
+                if not os.path.exists(os.path.join(checkpoint_path, "weights.safetensors")) and not os.path.exists(os.path.join(checkpoint_path, "weights.pt")):
+                    raise FileNotFoundError(f"Checkpoint weights not found at {checkpoint_path}. Please run python download_woosh.py in the models directory.")
+                    
+                self._woosh_model = FlowMapFromPretrained(LoadConfig(path=checkpoint_path))
+                self._woosh_model = self._woosh_model.eval().to(self.device)
+                print("[InGen Generator] 'Sony Woosh DFlow' loaded successfully.")
+            except Exception as e:
+                print(f"[InGen Generator] Failed to load Woosh model: {e}")
+                self._woosh_model = "FAILED"
+        return self._woosh_model
 
     def generate_tonal(self, prompt: str, count: int, duration: float, temperature: float, model: str = "audiogen-medium") -> list:
         print(f"[InGen Generator] generate_tonal called with model: {model}")
@@ -475,23 +510,84 @@ class AudioCraftGenerator:
 
     def _generate_woosh(self, prompt: str, count: int, duration: float, temperature: float, is_tonal: bool) -> list:
         """
-        Sony Woosh DFlow integration. Points to server/models/woosh repository clone.
-        Falls back to AudioGen with helpful setup messages if not cloned.
+        Sony Woosh DFlow integration.
         """
-        server_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        woosh_dir = os.path.join(server_dir, "models", "woosh")
-        
-        if not os.path.exists(woosh_dir):
-            print("\n" + "="*80)
-            print("[SETUP WARNING] Sony Woosh DFlow is selected but the model directory is not set up.")
-            print("To activate Sony Woosh DFlow, run:")
-            print(f"  git clone https://github.com/SonyResearch/Woosh \"{woosh_dir}\"")
-            print("And place your model checkpoints under:")
-            print(f"  \"{woosh_dir}/checkpoints/\"")
-            print("Falling back gracefully to AudioGen for generation...")
-            print("="*80 + "\n")
+        model = self.get_woosh_model()
+        if model == "FAILED" or model is None:
+            print("[InGen Generator] Woosh model is not available. Falling back to AudioGen.")
             return self._generate_audiogen(prompt, count, duration, temperature, is_tonal)
+            
+        from woosh.inference.flowmap_sampler import sample_euler
         
-        print(f"[InGen Generator] Sony Woosh DFlow repository detected! Activating fast Foley matching...")
-        # Since it is configured, we route to the active AudioGen code with optimized settings.
-        return self._generate_audiogen(prompt, count, duration, temperature, is_tonal)
+        if is_tonal:
+            descriptions = self._derive_tonal_prompts(prompt, count, "woosh")
+            prefix = "tonal"
+            midi_key = 60
+            foley_note_on_count = count
+        else:
+            half = count // 2
+            foley_note_on_count = count - half
+            descriptions = []
+            for _ in range(foley_note_on_count):
+                descriptions.append(self._derive_foley_prompt(prompt, "note_on"))
+            for _ in range(half):
+                descriptions.append(self._derive_foley_prompt(prompt, "note_off"))
+            prefix = "foley"
+            midi_key = -1
+
+        print(f"[InGen Generator] Synthesizing {count} samples using Sony Woosh DFlow...")
+        
+        generated_samples = []
+        for i, desc in enumerate(descriptions):
+            # Model latent shape [1, 128, 501] roughly corresponds to 10s audio at 48kHz
+            noise = torch.randn(1, 128, 501).to(self.device)
+            
+            cond = model.get_cond(
+                {"audio": None, "description": [desc]},
+                no_dropout=True,
+                device=self.device,
+            )
+            
+            with torch.inference_mode():
+                x_fake = sample_euler(
+                    model=model,
+                    noise=noise,
+                    cond=cond,
+                    num_steps=4,
+                    renoise=[0, 0.5, 0.5, 0.3],
+                    cfg=4.5,
+                )
+                audio_fake = model.autoencoder.inverse(x_fake)
+                
+            audio_np = audio_fake[0].cpu().numpy()
+            audio_np = self._normalize_audio(audio_np, 0.9)
+            
+            sample_rate = 48000
+            max_samples = int(duration * sample_rate)
+            if len(audio_np.shape) == 2: # [C, T]
+                if audio_np.shape[1] > max_samples:
+                    audio_np = audio_np[:, :max_samples]
+                audio_np = audio_np.T # [T, C]
+            else: # [T]
+                if audio_np.shape[0] > max_samples:
+                    audio_np = audio_np[:max_samples]
+                    
+            if is_tonal:
+                current_prefix = prefix
+            else:
+                current_prefix = "foley_note_off" if i >= foley_note_on_count else "foley_note_on"
+                
+            filename = f"{current_prefix}_woosh_{uuid.uuid4().hex[:8]}_{i}.wav"
+            filepath = os.path.join(self.cache_dir, filename)
+            
+            import scipy.io.wavfile as wavfile
+            wavfile.write(filepath, sample_rate, audio_np)
+            print(f"[InGen Generator] Saved Woosh DFlow sample: {filepath}")
+            
+            generated_samples.append({
+                "filename": filename,
+                "midi_root_key": midi_key,
+                "pitch_correction_cents": 0.0
+            })
+            
+        return generated_samples
